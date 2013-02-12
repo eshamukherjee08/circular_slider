@@ -1,0 +1,12 @@
+/* Style common to all body*/
+*{margin:0px;padding:0px;}
+ul,ol{list-style:none;}
+body{overflow:hidden;}
+#cslider{width: 940px;margin: 0px auto;position: relative;}
+
+
+/*Slider styles*/
+.slider{width:100%;float:left;}
+.slider ul{position: relative;top:0px;left:0px;transform :translate3d(0px,0px,0px) ; -webkit-transform :translate3d(0px,0px,0px) ;  -moz-transform:translate3d(0px,0px,0px);}
+.slider ul li{float:left;opacity:0.5;}
+.slider ul li.current{opacity:1;}
