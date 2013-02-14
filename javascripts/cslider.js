@@ -50,11 +50,11 @@
       //setting dimensions
       setListWidth();
       $('#test_next').click(function(){
-        autoRotateSlider()
+        autoRotateSlider(2);
       });
       
       $('#test_prev').click(function(){
-        addNextViewElement()
+        viewPrevElement();
       });
       
     }
@@ -122,42 +122,78 @@
     }
     
     
-    function autoRotateSlider(){
+    function autoRotateSlider(showNum){
       var elementWidth = -(parseInt($('#cslider').width()));
       var currentLeft = getCurrentLeft($('#cslider ul'));
-      slideView((elementWidth+currentLeft),$('#cslider ul'), 1000);
-      addPrevViewElement();
+
+      var moveLen = currentLeft + (elementWidth * showNum)
+      
+      slideView((moveLen),$('#cslider ul'), 1000);
+      viewNextElement(showNum);
+      
+      var listCount = parseInt($('#cslider ul li').length);
+      var midElement = Math.floor(listCount/2)+1
+      var initMove = elementWidth * (listCount - midElement)
+      setTimeout(function(){
+        console.log('now')
+        slideView(initMove,$('#cslider ul'), 0);
+
+      },1000);
     }
     
     //adding element to starting of list on left movement
-    function addPrevViewElement(){
-      console.log('next fire')
+    function viewNextElement(showNum){
+      // console.log('view next')
       var elementWidth = -(parseInt($('#cslider').width()));
       var remEle = $('#cslider ul li').first();
       var copyPrevSlide = remEle.clone();
       
       var listCount = parseInt($('#cslider ul li').length);
       var midElement = Math.floor(listCount/2)+1
-      
       var initMove = elementWidth * (listCount - midElement)
       
-      var nextCurrent = $('.current').next();
-      nextCurrent.addClass('current')
-      nextCurrent.siblings().removeClass('current');
-      setTimeout(function(){
-        slideView(initMove,$('#cslider ul'), 0);
+      for(var a=1; a<= showNum; a++){
+        console.log(a)
+        var remEle = $('#cslider ul li').first();
+        var copyPrevSlide = remEle.clone();
+        var nextCurrent = $('.current').next();
+        nextCurrent.addClass('current')
+        nextCurrent.siblings().removeClass('current');
         remEle.remove();
         copyPrevSlide.appendTo('#cslider ul');
-      },0);
+        if(a == showNum){
+          // setTimeout(function(){
+          //   console.log('now')
+          //   slideView(initMove,$('#cslider ul'), 0);
+          // 
+          // },1000);
+        }
+        var actThumb = $('.active').next();
+        actThumb.addClass('active');
+        actThumb.siblings().removeClass('active');
+      }
       
-      var actThumb = $('.active').next();
-      actThumb.addClass('active');
-      actThumb.siblings().removeClass('active');
+      // var nextCurrent = $('.current').next();
+      // nextCurrent.addClass('current')
+      // nextCurrent.siblings().removeClass('current');
+      // setTimeout(function(){
+      //   // slideView(initMove,$('#cslider ul'), 0);
+      //   // remEle.remove();
+      //   // copyPrevSlide.appendTo('#cslider ul');
+      // },1000);
+      
+      // var actThumb = $('.active').next();
+      // actThumb.addClass('active');
+      // actThumb.siblings().removeClass('active');
+      
     }
     
+    function resetAfterNext(){}
+    
+    
     //adding element to send of list on right movement
-    function addNextViewElement(){
-      console.log('prev fire')
+    function viewPrevElement(){
+      // console.log('view prev')
       var elementWidth = -(parseInt($('#cslider').width()));
       var currentLeft = getCurrentLeft($('#cslider ul'));
       var remEle = $('#cslider ul li').last();
@@ -169,6 +205,7 @@
       var initMove = elementWidth * (listCount - midElement)
       
       slideView((currentLeft - elementWidth),$('#cslider ul'), 1000);
+      
       var nextCurrent = $('.current').prev();
       nextCurrent.addClass('current')
       nextCurrent.siblings().removeClass('current');
@@ -176,7 +213,7 @@
         remEle.remove();
         copyLastSlide.prependTo('#cslider ul');
         slideView(initMove,$('#cslider ul'), 0);
-      },0);
+      },1000);
       
       var actThumb = $('.active').prev();
       actThumb.addClass('active');
